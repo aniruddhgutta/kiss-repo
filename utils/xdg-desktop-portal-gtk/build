@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup \
+    -Dprefix=/usr \
+    -Dsystemd-user-unit-dir=/dev/null \
+    -Dwallpaper=disabled \
+    -Dsettings=disabled \
+    -Dappchooser=enabled \
+    -Dlockdown=disabled \
+    output
+
+ninja -C output
+ninja -C output install
+
+rm -rf "$DESTDIR"/usr/lib/systemd
