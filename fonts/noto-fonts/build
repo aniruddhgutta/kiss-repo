@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+install -Dm644 fonts/*/hinted/ttf/*.tt[fc] -t "$1/usr/share/fonts/noto"
+unzip -d "$1/usr/share/fonts/noto-cjk" -j 03_NotoSerifCJK-TTF-VF.zip \
+    -x '*/NotoSerifCJK-VF.ttf.ttc' -x LICENSE
