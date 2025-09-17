@@ -1,0 +1,5 @@
+alsa-lib
+openssl
+dbus
+rust make
+libsixel make
