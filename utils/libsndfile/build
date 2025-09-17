@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+export CFLAGS="$CFLAGS -std=c99"
+
+./configure \
+    --prefix=/usr \
+    --disable-static
+
+make
+make DESTDIR="$1" install
