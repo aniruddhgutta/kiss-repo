@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup \
+    -Dprefix=/usr \
+    -Dlibexecdir=/usr/lib \
+    -Dbuildtype=release \
+    -Ddbghelp=disabled \
+    -Dintrospection=disabled \
+    -Dexamples=disabled \
+    -Ddoc=disabled \
+    -Db_colorout=never \
+    -Dtests=disabled \
+    output
+
+ninja -C output
+ninja -C output install
