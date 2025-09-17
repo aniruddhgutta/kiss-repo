@@ -1,0 +1,16 @@
+cairo
+clang make
+dbus
+glib
+libdisplay-info
+libinput
+libseat
+libudev-zero
+libxkbcommon
+mesa
+pango
+pipewire
+pixman make
+pkgconf make
+rust make
+wayland

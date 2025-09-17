@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+cargo build \
+    --release \
+    --no-default-features \
+    --features dbus,xdp-gnome-screencast
+
+patch -p1 < remove-session.patch
+
+install -Dm755 target/release/niri "$1/usr/bin/niri"
+install -Dm644 resources/niri.desktop "$1/usr/share/wayland-sessions/niri.desktop"
+install -Dm644 resources/niri-portals.conf "$1/usr/share/xdg-desktop-portal/niri-portals.conf"
