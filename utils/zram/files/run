@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo 1 | tee /sys/class/zram-control/hot_add
+
+echo lz4 | tee /sys/block/zram0/comp_algorithm
+echo 8G | tee /sys/block/zram0/disksize
+mkswap /dev/zram0
+swapon /dev/zram0
+
+exec sleep infinity
