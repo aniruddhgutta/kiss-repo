@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+./configure \
+    --prefix=/usr \
+    --disable-nls \
+    --disable-leaks \
+    --program-prefix=b \
+    --enable-btyacc
+
+make
+make DESTDIR="$1" install
