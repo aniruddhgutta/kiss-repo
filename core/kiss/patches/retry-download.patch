@@ -1,0 +1,21 @@
+diff --git a/kiss b/kiss
+index ed369e5..c95f028 100755
+--- a/kiss
++++ b/kiss
+@@ -482,7 +482,15 @@ pkg_source_url() {
+         wget|wget2) set -- -O       "$@" ;;
+     esac
+ 
+-    "$cmd_get" "$@" || {
++    cnt=0
++
++    while ! "$cmd_get" "$@"; do
++        : $((cnt += 1))
++        [ "$cnt" -lt 3 ] || break
++        war "$repo_name" "Download failed, retrying"
++    done
++
++    equ "$cnt" 3 && {
+         rm -f "$_tmp_file"
+         die "$repo_name" "Failed to download $download_source"
+     }
