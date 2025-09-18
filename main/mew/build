@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+export CFLAGS="$CFLAGS -Wno-incompatible-pointer-types"
+
+make
+make DESTDIR="$1" install
