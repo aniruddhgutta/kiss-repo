@@ -9,3 +9,5 @@
 
 make
 make DESTDIR="$1" install
+
+ln -s byacc "$1/usr/bin/yacc"
