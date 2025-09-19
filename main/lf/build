@@ -1,3 +1,10 @@
 #!/bin/sh -e
 
-go build -o "$1/usr/bin/lf"
+export GOPATH="$PWD/go"
+export GO111MODULE=on
+
+go build \
+    -modcacherw \
+    -trimpath
+
+install -Dm755 lf "$1/usr/bin/lf"
