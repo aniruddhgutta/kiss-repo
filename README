@@ -64,16 +64,16 @@ ________________________________________________________________________________
 
 Package/fork:
 
-    - [ ] mpd
+    - [x] mpd
     - [ ] mpc
-    - [ ] rmpc
-    - [ ] ncmpcpp
-    - [ ] helix 
+    - [x] rmpc
+    - [-] ncmpcpp
+    - [x] helix 
     - [ ] chromium
     - [x] xdg-desktop-portal-gtk
-    - [ ] bibata-cursors
-    - [ ] papirus-icon-theme
+    - [x] bibata-cursors
+    - [x] papirus-icon-theme
     - [ ] papirus-folders
     - [ ] nwg-look
-    - [ ] pywal16
+    - [x] pywal16
     - [x] spotify-player
