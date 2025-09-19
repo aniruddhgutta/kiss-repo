@@ -1,0 +1,4 @@
+libmpdclient
+ncurses
+pkgconf make
+rust make
