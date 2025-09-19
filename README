@@ -20,13 +20,13 @@ Package documentation:
 
 Repository structure:
 
-    - core/     - Base system and toolchain (frozen)
-    - kernels/  - Linux kernel and firmware
-    - fonts/    - Font packages
+    - core/     - Base system and toolchain
+    - kernel/   - Linux kernels and firmware
     - main/     - User-facing programs
+    - themes/   - Fonts, cursors, icons, themes
     - utils/    - Daemons, services, helper tools, non-essential libs
-    - wip/      - Experimental or WIP packages
-    - mkenv     - User-sourced build optimizations (~/.profile)
+    - wip/      - Experimental, dropped, WIP packages
+    - mkenv     - User-sourced build optimizations
 
 
 Commit Style
@@ -69,11 +69,25 @@ Package/fork:
     - [x] rmpc
     - [-] ncmpcpp
     - [x] helix 
-    - [ ] chromium
     - [x] xdg-desktop-portal-gtk
     - [x] bibata-cursors
     - [x] papirus-icon-theme
     - [ ] papirus-folders
-    - [ ] nwg-look
     - [x] pywal16
     - [x] spotify-player
+    - [ ] zig
+    - [ ] zoxide
+    - [ ] playerctl
+    - [ ] spicetify-cli
+    - [ ] stow
+    - [ ] chafa
+    - [ ] swayimg
+    - [ ] fish
+    - [ ] nerd font
+    - [ ] xwayland
+    - [ ] nwg-look
+    - [ ] quickshell
+    - [ ] thunar
+    - [ ] librewolf
+    - [ ] obsidian
+    - [ ] chromium
