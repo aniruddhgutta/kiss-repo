@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+cargo build --profile opt
+
+install -Dm755 target/opt/hx "$1/usr/bin/hx"
+
+mkdir -p "$1/usr/lib/helix/"
+cp -R runtime/ "$1/usr/lib/helix/"
+
+install -Dm755 helix_runtime.sh "$1/etc/profile.d/helix_runtime.sh"
