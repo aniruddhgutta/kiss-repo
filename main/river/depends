@@ -1,0 +1,9 @@
+libevdev
+libinput
+libxkbcommon
+pixman
+pkgconf make
+wayland
+wayland-protocols
+wlroots make
+zig-bin make
