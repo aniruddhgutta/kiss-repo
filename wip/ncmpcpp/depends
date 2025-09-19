@@ -1,0 +1,8 @@
+boost
+curl
+libmpdclient
+ncurses
+readline
+fftw
+libtool
+automake

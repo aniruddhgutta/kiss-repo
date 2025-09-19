@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+export LIBS="$(pkg-config --libs readline ncursesw)"
+
+autoreconf -fiv
+
+./configure \
+    --enable-outputs \
+    --enable-visualizer \
+    --prefix=/usr
+
+make
+make install
