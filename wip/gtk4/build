@@ -1,0 +1,36 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup \
+    -Dprefix=/usr \
+    -Dsysconfdir=/etc \
+    -Dbuildtype=release \
+    -Dx11-backend=false \
+    -Dwayland-backend=true \
+    -Dbroadway-backend=false \
+    -Dwin32-backend=false \
+    -Dmacos-backend=false \
+    -Dandroid-backend=false \
+    -Dmedia-gstreamer=disabled \
+    -Dprint-cups=disabled \
+    -Dvulkan=disabled \
+    -Dcloudproviders=disabled \
+    -Dtracker=disabled \
+    -Dintrospection=disabled \
+    -Ddocumentation=false \
+    -Dbuild-demos=false \
+    -Dbuild-tests=false \
+    -Dbuild-testsuite=false \
+    -Dbuild-examples=false \
+    output
+
+ninja -C output
+ninja -C output install
+
+install -Dm644 /dev/stdin "$DESTDIR/usr/share/gtk-4.0/settings.ini" << EOF
+[Settings]
+gtk-icon-theme-name = Adwaita
+gtk-theme-name = Adwaita
+gtk-font-name = Cantarell 11
+EOF

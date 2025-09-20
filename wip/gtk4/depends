@@ -1,0 +1,7 @@
+libepoxy
+glib
+gdk-pixbuf
+cairo
+pango
+graphene
+libxkbcommon
