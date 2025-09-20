@@ -1,0 +1,11 @@
+dbus
+libdisplay-info
+libdrm
+libinput
+libseat
+libudev-zero
+libxkbcommon
+mesa
+pipewire
+wayland
+wayland-protocols

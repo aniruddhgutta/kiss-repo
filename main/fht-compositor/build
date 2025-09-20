@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+cargo build --profile opt
+
+install -Dm755 target/opt/fht-compositor "$1/usr/bin/fht-compositor"
+
+install -Dm644 res/fht-compositor.desktop \
+    "$1/usr/share/wayland-sessions/fht-compositor.desktop"
