@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+export GOPATH="$PWD/go"
+export GO111MODULE=on
+
+go build \
+    -modcacherw \
+    -trimpath \
+    -ldflags="-X 'main.version=$2'" \
+    -o spicetify
+
+mkdir -p "$1/usr/bin" "$1/usr/lib" "$1/usr/lib/spicetify"
+
+for cp in Themes Extensions CustomApps jsHelper globals.d.ts css-map.json spicetify; do
+    cp -r $cp "$1/usr/lib/spicetify/"
+done
+
+ln -sf /usr/lib/spicetify/spicetify "$1/usr/bin/spicetify"
