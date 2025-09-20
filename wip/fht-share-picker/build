@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+cargo build --release
+
+install -Dm755 target/release/fht-share-picker "$1/usr/bin/fht-share-picker"
+
+install -Dm644 res/fht-compositor.portal \
+    "$1/usr/share/xdg-desktop-portal/portals/fht-compositor.portal"
+
+install -Dm644 res/fht-compositor-portals.conf \
+    "$1/usr/share/xdg-desktop-portal/fht-compositor-portals.conf"
