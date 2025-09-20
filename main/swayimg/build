@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup \
+    -Dprefix=/usr \
+    -Djpeg=enabled \
+    -Dpng=enabled \
+    -Dwebp=enabled \
+    -Dgif=enabled \
+    output
+
+ninja -C output
+ninja -C output install

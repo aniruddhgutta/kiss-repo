@@ -1,0 +1,13 @@
+freetype-harfbuzz
+giflib
+json-c
+libdrm
+libffi make
+libjpeg-turbo
+libpng
+libsixel
+libwebp
+libxkbcommon
+tiff
+wayland
+wayland-protocols make
