@@ -1,0 +1,34 @@
+TODO
+________________________________________________________________________________
+
+Package/fork:
+
+    - [x] mpd
+    - [x] mpc
+    - [x] rmpc
+    - [x] helix 
+    - [x] xdg-desktop-portal-gtk
+    - [x] bibata-cursors
+    - [x] papirus-icon-theme
+    - [x] pywal16
+    - [x] spotify-player
+    - [-] zsh (fails)
+    - [ ] zig
+    - [x] playerctl
+    - [x] spicetify-cli
+    - [x] stow
+    - [x] chafa
+    - [x] swayimg
+    - [ ] fish
+    - [x] nerd font
+    - [ ] xwayland
+    - [x] fht-compositor
+    - [ ] quickshell
+    - [ ] thunar
+    - [ ] librewolf
+    - [ ] obsidian
+    - [ ] chromium
+    - [-] zoxide (need zsh)
+    - [-] papirus-folders (needs patch to remove bashisms)
+    - [-] ncmpcpp (keeps failing)
+    - [-] nwg-look (required x11 dependencies)

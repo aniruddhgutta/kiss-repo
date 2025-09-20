@@ -57,37 +57,3 @@ Contributions to this repository should adhere to the following commit style.
 |   $ git commit -m "pkg_name: fixed build failure ..."                        |
 |                                                                              |
 +------------------------------------------------------------------------------+
-
-
-TODO
-________________________________________________________________________________
-
-Package/fork:
-
-    - [x] mpd
-    - [ ] mpc
-    - [x] rmpc
-    - [-] ncmpcpp
-    - [x] helix 
-    - [x] xdg-desktop-portal-gtk
-    - [x] bibata-cursors
-    - [x] papirus-icon-theme
-    - [ ] papirus-folders
-    - [x] pywal16
-    - [x] spotify-player
-    - [ ] zig
-    - [ ] zoxide
-    - [ ] playerctl
-    - [ ] spicetify-cli
-    - [ ] stow
-    - [ ] chafa
-    - [ ] swayimg
-    - [ ] fish
-    - [ ] nerd font
-    - [ ] xwayland
-    - [ ] nwg-look
-    - [ ] quickshell
-    - [ ] thunar
-    - [ ] librewolf
-    - [ ] obsidian
-    - [ ] chromium
