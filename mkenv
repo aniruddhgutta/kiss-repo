@@ -40,8 +40,8 @@ LDFLAGS="$LDFLAGS -Wl,--sort-common -Wl,--hash-style=gnu"
 # security: full RELRO + immediate symbol binding
 
 # Compiler and LTO selection
-USE_CLANG=0  # 0=gcc/g++, 1=clang/clang++ (ensure clang is installed)
-USE_LTO=0    # 0=disabled, 1=enabled (link-time optimization)
+: "${USE_CLANG:=0}"     # 0=gcc/g++, 1=clang/clang++ (ensure clang is installed)
+: "${USE_LTO:=0}"       # 0=disabled, 1=enabled (link-time optimization)
 # lto: optimizes across object files at link time - smaller/faster bins, slower builds, may break some packages
 
 if [ "$USE_CLANG" = 1 ]; then
