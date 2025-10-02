@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+USE_LTO=1 . mkenv
+echo $CFLAGS
+
 patch -p1 < no-perl.patch
 
 make oldconfig
