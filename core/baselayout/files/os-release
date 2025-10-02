@@ -1,5 +1,5 @@
-NAME="KISS Linux Community"
-PRETTY_NAME="KISS Linux Community"
+NAME="KISS Linux"
+PRETTY_NAME="KISS Linux"
 ID=kiss
 BUILD_ID=rolling
 HOME_URL="https://kisslinux.github.io"
