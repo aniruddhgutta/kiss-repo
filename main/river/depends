@@ -5,5 +5,5 @@ pixman
 pkgconf make
 wayland
 wayland-protocols
-wlroots make
+wlroots
 zig-bin make
