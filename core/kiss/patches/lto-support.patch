@@ -1,0 +1,66 @@
+diff --git a/kiss b/kiss
+index dbad491..0882a30 100755
+--- a/kiss
++++ b/kiss
+@@ -1102,6 +1102,51 @@ pkg_build() {
+     # Call the build script, log the output to the terminal and to a file.
+     # There's no PIPEFAIL in POSIX shell so we must resort to tricks like kill.
+     {
++        # LTO (Link-Time Optimization) configuration
++        # If a blacklist file exists, check whether to enable LTO for this package.
++        # Packages not in the blacklist are built with LTO flags automatic added
++        # based on active compiler.
++        [ -f "$KISS_LTO_BLACKLIST" ] && {
++            if grep -qx "$1" "$KISS_LTO_BLACKLIST" 2>/dev/null; then
++                log "$1" "LTO disabled (blacklisted)"
++            else
++                case "${CC:-gcc}" in
++                    *clang*) compiler=clang ;;
++                    *gcc*|gcc) compiler=gcc ;;
++                    *) case $("${CC:-gcc}" --version 2>/dev/null) in
++                            *clang*|*LLVM*) compiler=clang ;;
++                            *) compiler=gcc ;;
++                       esac ;;
++                esac
++
++                # Apply compiler-specific LTO flags
++                case "$compiler" in
++                    clang)
++                        CFLAGS="$CFLAGS -flto=thin"
++                        CXXFLAGS="$CXXFLAGS -flto=thin"
++                        FCFLAGS="$FCFLAGS -flto=thin"
++                        FFLAGS="$FFLAGS -flto=thin"
++                        LDFLAGS="$LDFLAGS -flto=thin"
++                        ;;
++                    gcc)
++                        CFLAGS="$CFLAGS -flto=auto -fuse-linker-plugin"
++                        CXXFLAGS="$CXXFLAGS -flto=auto -fuse-linker-plugin"
++                        FCFLAGS="$FCFLAGS -flto=auto -fuse-linker-plugin"
++                        FFLAGS="$FFLAGS -flto=auto -fuse-linker-plugin"
++                        LDFLAGS="$LDFLAGS -flto=auto -fuse-linker-plugin"
++                        AR=gcc-ar
++                        NM=gcc-nm
++                        ;;
++                esac
++                log "$1" "LTO enabled"
++            fi
++        }
++
++        # Display active compiler flags for debugging/verification
++        log "$1" "CFLAGS:   $CFLAGS"
++        log "$1" "CXXFLAGS: $CXXFLAGS"
++        log "$1" "LDFLAGS:  $LDFLAGS"
++
+         # Give the script a modified environment. Define toolchain program
+         # environment variables assuming a generic environment by default.
+         #
+@@ -1113,6 +1158,9 @@ pkg_build() {
+         CXX="${CXX:-c++}" \
+         NM="${NM:-nm}" \
+         RANLIB="${RANLIB:-ranlib}" \
++        CFLAGS="$CFLAGS" \
++        CXXFLAGS="$CXXFLAGS" \
++        LDFLAGS="$LDFLAGS" \
+         RUSTFLAGS="--remap-path-prefix=$PWD=. $RUSTFLAGS" \
+         GOFLAGS="-trimpath -modcacherw $GOFLAGS" \
+         GOPATH="$PWD/go" \
