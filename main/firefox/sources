@@ -1,0 +1,6 @@
+https://ftp.mozilla.org/pub/firefox/releases/143.0.3/source/firefox-143.0.3.source.tar.xz
+patches/fix-target-detection.patch
+patches/musl-sandbox.patch
+patches/no-atk.patch
+patches/no-dbus.patch
+patches/no-fribidi.patch
