@@ -1,0 +1,8 @@
+#!/bin/sh
+# Send a notification on successful build
+
+command -v notify-send > /dev/null || exit 0
+
+case "$1" in
+    post-build) notify-send -u low "Build success!" "Successfully built $2" ;;
+esac
