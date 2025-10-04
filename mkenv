@@ -52,7 +52,7 @@ else
     export CC=gcc
     export CXX=g++
     [ "$USE_LTO" = 1 ] && {
-        LTO_FLAGS="-flto=auto -fuse-linker-plugin"
+        LTO_FLAGS="-flto -fuse-linker-plugin"
         export AR=gcc-ar
         export NM=gcc-nm
     }
