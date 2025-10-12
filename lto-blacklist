@@ -13,7 +13,9 @@ firefox
 ffmpeg
 libclc
 llvm
+llvm-bootstrap
 nodejs
+rust
 spirv-headers
 spirv-llvm-translator
 spirv-tools

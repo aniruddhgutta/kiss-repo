@@ -6,11 +6,18 @@ ________________________________________________________________________________
 Personal KISS Linux Repository
 ________________________________________________________________________________
 
-More information:
+Repository structure:
 
-    - https://kisslinux.github.io
-    - https://kisslinux.github.io/package-system
-    - https://kisscommunity.org
+    - core/     - Base system and toolchain
+    - hooks/    - KISS_HOOKS for the package manager
+    - kernel/   - Linux kernels and firmware
+    - llvm/     - Bootstrap Clang/LLVM/musl toolchain
+    - main/     - User-facing programs
+    - themes/   - Fonts, cursors, icons, themes
+    - utils/    - Daemons, services, helper tools, non-essential libs
+    - wip/      - Experimental, dropped, WIP packages
+    - mkenv     - User-sourced build optimizations
+    - lto-blacklist - packages with LTO disabled
 
 Package documentation:
 
@@ -18,15 +25,11 @@ Package documentation:
     - https://kisslinux.github.io/package-manager
     - https://kisscommunity.org/kiss/style-guide
 
-Repository structure:
+More information:
 
-    - core/     - Base system and toolchain
-    - kernel/   - Linux kernels and firmware
-    - main/     - User-facing programs
-    - themes/   - Fonts, cursors, icons, themes
-    - utils/    - Daemons, services, helper tools, non-essential libs
-    - wip/      - Experimental, dropped, WIP packages
-    - mkenv     - User-sourced build optimizations
+    - https://kisslinux.github.io
+    - https://kisslinux.github.io/package-system
+    - https://kisscommunity.org
 
 
 Commit Style

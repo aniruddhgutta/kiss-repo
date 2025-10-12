@@ -2,12 +2,11 @@
 # NOTE: Review aggressive flags below - may break some packages
 
 # Compiler flags
-COMMON_FLAGS="-O2 -march=native -mtune=native -pipe"
+COMMON_FLAGS="-O2 -march=native -pipe"
 # basics:
 #  -O2 - safe optimizations
-#  -march=native - targets host architecture, can explicitly set too
-#       eg: -march=znver2 -mtune=znver2 - targets Ryzen 4000
-#  -pipe - speeds up builds
+#  -march=native - targets the host architecture and adds extra CPU-specific flags not enabled by explicit architectures
+#  -pipe - speeds up builds, uses pipes instead of temporary files
 
 COMMON_FLAGS="$COMMON_FLAGS -ffunction-sections -fdata-sections -fno-plt -fstack-protector-strong"
 # misc:
@@ -47,6 +46,7 @@ LDFLAGS="$LDFLAGS -Wl,--sort-common -Wl,--hash-style=gnu"
 if [ "$USE_CLANG" = 1 ]; then
     export CC=clang
     export CXX=clang++
+    LDFLAGS="$LDFLAGS -fuse-ld=lld"
     [ "$USE_LTO" = 1 ] && LTO_FLAGS="-flto=thin"
 else
     export CC=gcc
