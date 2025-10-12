@@ -1,5 +1,5 @@
 alsa-lib
-openssl
 dbus
-rust make
 libsixel make
+openssl
+rust make

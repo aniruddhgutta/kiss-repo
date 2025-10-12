@@ -5,4 +5,4 @@ cargo build \
     --no-default-features \
     --features rodio-backend,streaming,media-control,sixel,notify
 
-install -Dm755 target/release/spotify_player "$1/usr/bin/spotify-player"
+install -Dm755 target/release/spotify_player "$1/usr/bin/spotify_player"
