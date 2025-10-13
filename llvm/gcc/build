@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+cat <<EOF
+
+==> To prevent the headache of having a kiss-llvm system accidentally
+    installing GCC (and therefore, preventing a multiple C++ stdlib
+    scenario), GCC is disabled for now.
+
+EOF
+exit 1

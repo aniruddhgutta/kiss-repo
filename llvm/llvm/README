@@ -8,7 +8,7 @@ intermediate representation (IR) that serves as a portable, high-level assembly
 language that can be optimized with a variety of transformations over multiple
 passes. [0]
 
-In Wyverkiss, LLVM does not only contain the framework, but also a
+In this subrepo, LLVM does not only contain the framework, but also a
 fully-functioning C and C++ compiler (Clang), C++ standard library (libc++),
 and binary utilities (such as linker) to create and manage binary programs,
 object files, libraries, profile data, and assembly source code.
