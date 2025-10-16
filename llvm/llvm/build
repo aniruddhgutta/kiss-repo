@@ -7,28 +7,30 @@ patch -p1 < musl-stack-size.patch
 cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
-    \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_CXX_COMPILER=clang++ \
     \
-    -DLLVM_CCACHE_BUILD=ON \
     -DLLVM_ENABLE_LTO=Thin \
     -DLLVM_BUILD_LLVM_DYLIB=ON \
     -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DLLVM_ENABLE_LLD=ON \
+    -DLLVM_OPTIMIZED_TABLEGEN=ON \
+    -DLLVM_ENABLE_ASSERTIONS=OFF \
+    \
     -DLLVM_ENABLE_PROJECTS='clang;lld' \
     -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind' \
     -DLLVM_ENABLE_RTTI=ON \
     -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
-    -DLLVM_HOST_TRIPLE=$(cc -dumpmachine) \
-    -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON \
+    -DLLVM_HOST_TRIPLE=x86_64-pc-linux-musl \
     -DLLVM_TARGETS_TO_BUILD='host;AMDGPU' \
-    -DLLVM_ENABLE_LIBCXX=ON \
-    -DLLVM_ENABLE_LLD=ON \
-    -DLLVM_OPTIMIZED_TABLEGEN=ON \
+    -DLLVM_INSTALL_UTILS=ON \
+    -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON \
     \
     -DLLVM_ENABLE_LIBEDIT=OFF \
     -DLLVM_ENABLE_LIBPFM=OFF \
     -DLLVM_ENABLE_LIBXML2=OFF \
+    -DLLVM_ENABLE_ZLIB=ON \
+    -DLLVM_ENABLE_ZSTD=OFF \
     -DLLVM_INCLUDE_BENCHMARKS=OFF \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
@@ -37,27 +39,35 @@ cmake -B build \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
-    -DCLANG_INCLUDE_DOCS=OFF \
-    -DCLANG_INCLUDE_TESTS=OFF \
+    -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
     -DCLANG_ENABLE_ARCMT=OFF \
-    -DCLANG_DEFAULT_LINKER=lld \
+    -DCLANG_INCLUDE_DOCS=OFF \
+    -DCLANG_INCLUDE_TESTS=OFF \
     \
     -DLIBCXX_CXX_ABI=libcxxabi \
-    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF \
     -DLIBCXX_HAS_MUSL_LIBC=ON \
+    -DLIBCXX_USE_COMPILER_RT=ON \
     -DLIBCXX_HAS_ATOMIC_LIB=OFF \
+    -DLIBCXX_ENABLE_SHARED=ON \
+    -DLIBCXX_ENABLE_STATIC=OFF \
+    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON \
+    -DLIBCXX_STATICALLY_LINK_ABI_IN_SHARED_LIBRARY=ON \
     -DLIBCXX_INCLUDE_DOCS=OFF \
     -DLIBCXX_INCLUDE_TESTS=OFF \
-    -DLIBCXX_USE_COMPILER_RT=ON \
     \
-    -DLIBCXXABI_ENABLE_STATIC_UNWINDER=OFF \
     -DLIBCXXABI_USE_COMPILER_RT=ON \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+    -DLIBCXXABI_ENABLE_SHARED=ON \
+    -DLIBCXXABI_ENABLE_STATIC=OFF \
+    -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON \
+    -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=ON \
     \
+    -DLIBUNWIND_USE_COMPILER_RT=ON \
+    -DLIBUNWIND_ENABLE_SHARED=ON \
+    -DLIBUNWIND_ENABLE_STATIC=OFF \
     -DLIBUNWIND_INCLUDE_DOCS=OFF \
     -DLIBUNWIND_INCLUDE_TESTS=OFF \
-    -DLIBUNWIND_USE_COMPILER_RT=ON \
     \
     -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
     -DCOMPILER_RT_BUILD_MEMPROF=OFF \
@@ -65,31 +75,26 @@ cmake -B build \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
     -DCOMPILER_RT_BUILD_XRAY=OFF \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
-    -DCOMPILER_RT_INCLUDE_TESTS=OFF \
     -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON \
     -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF \
+    -DCOMPILER_RT_INCLUDE_TESTS=OFF \
     \
     -Wno-dev llvm
 
-cmake --build   build
+cmake --build build
 cmake --install build
 
-# libc++abi header files
+# Headers
 mkdir -p "$1/usr"
 cp -r libcxxabi/include "$1/usr"
 
-# LLD and LLVM tools: Replace GNU binutils
-ln -s ld.lld "$1/usr/bin/ld"
+# POSIX compliance
+ln -sf ld.lld "$1/usr/bin/ld"
+ln -sf clang "$1/usr/bin/cc"
+ln -sf clang++ "$1/usr/bin/c++"
 
-# Clang: Some legacy programs may require cc
-ln -s clang "$1/usr/bin/cc"
-ln -s clang++ "$1/usr/bin/c++"
-
-# Clang: POSIX compliance
-cat > "c99" <<'EOF'
+cat > "$1/usr/bin/c99" <<'EOF'
 #!/bin/sh
 exec cc -std=c99 "$@"
 EOF
-
-cp c99 "$1/usr/bin/c99"
 chmod 755 "$1/usr/bin/c99"
