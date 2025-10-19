@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+make LDFLAGS="$LDFLAGS -static" sbase-box
+make DESTDIR="$1" PREFIX=/usr   sbase-box-install
