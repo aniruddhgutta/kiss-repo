@@ -1,0 +1,82 @@
+diff -r -u bear/conf/Unix32.mk BearSSL/conf/Unix32.mk
+--- BearSSL/conf/Unix32.mk	2022-09-23 22:12:08.693757744 +0200
++++ BearSSL/conf/Unix32.mk	2022-09-23 22:11:38.121500107 +0200
+@@ -7,6 +7,3 @@
+ include conf/Unix.mk
+ 
+ BUILD = build32
+-CFLAGS = -W -Wall -Os -fPIC -m32 -DBR_LOMUL
+-LDFLAGS = -m32
+-LDDLLFLAGS = -shared -m32
+diff -r -u bear/conf/UnixClang.mk BearSSL/conf/UnixClang.mk
+--- BearSSL/conf/UnixClang.mk	2022-09-23 22:12:08.693757744 +0200
++++ BearSSL/conf/UnixClang.mk	2022-09-23 22:11:46.869573231 +0200
+@@ -5,7 +5,3 @@
+ # utility, and Unix defaults.
+ include conf/Unix.mk
+ 
+-BUILD = bclang
+-CC = clang
+-LD = clang
+-LDDLL = clang
+diff -r -u bear/conf/Unix.mk BearSSL/conf/Unix.mk
+--- BearSSL/conf/Unix.mk	2022-09-23 22:12:08.693757744 +0200
++++ BearSSL/conf/Unix.mk	2022-09-23 22:12:37.234003397 +0200
+@@ -15,12 +15,6 @@
+ # Extension for library file name.
+ L = .a
+ 
+-# Prefix for DLL file name.
+-DP = lib
+-
+-# Extension for DLL file name.
+-D = .so
+-
+ # Output file names can be overridden directly. By default, they are
+ # assembled using the prefix/extension macros defined above.
+ # BEARSSLLIB = libbearssl.a
+@@ -30,32 +24,14 @@
+ # TESTSPEED = testspeed
+ # TESTX509 = testx509
+ 
++CCOUT = -c -o 
++
+ # File deletion tool.
+ RM = rm -f
+ 
+ # Directory creation tool.
+ MKDIR = mkdir -p
+ 
+-# C compiler and flags.
+-CC = cc
+-CFLAGS = -W -Wall -Os -fPIC
+-CCOUT = -c -o 
+-
+-# Static library building tool.
+-AR = ar
+-ARFLAGS = -rcs
+-AROUT =
+-
+-# DLL building tool.
+-LDDLL = cc
+-LDDLLFLAGS = -shared
+-LDDLLOUT = -o 
+-
+-# Static linker.
+-LD = cc
+-LDFLAGS = 
+-LDOUT = -o 
+-
+ # C# compiler; we assume usage of Mono.
+ MKT0COMP = mk$PmkT0.sh
+ RUNT0COMP = mono T0Comp.exe
+@@ -64,6 +40,6 @@
+ # by default. Building can still be invoked with an explicit target call
+ # (e.g. 'make dll' to force build the DLL).
+ #STATICLIB = no
+-#DLL = no
+-#TOOLS = no
+-#TESTS = no
++DLL = no
++TOOLS = no
++TESTS = no

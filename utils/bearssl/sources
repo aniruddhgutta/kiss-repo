@@ -1,0 +1,2 @@
+git+https://www.bearssl.org/git/BearSSL
+patches/flags.patch patch

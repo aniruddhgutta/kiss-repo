@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+for patch in patch/*.patch; do
+    patch -p1 < "$patch"
+done
+
+make all
+
+mkdir -p "$1/usr/lib"
+mkdir -p "$1/usr/include"
+
+cp build/libbearssl.a "$1/usr/lib"
+cp -r inc/* "$1/usr/include"
