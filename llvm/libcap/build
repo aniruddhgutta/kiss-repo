@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+patch -p1 < no-bash.patch
+sed -i 's/^CC := $(CROSS_COMPILE)gcc$/CC ?= $(CROSS_COMPILE)gcc/' Make.Rules
+
+mk() {
+    make \
+        GOLANG=no \
+        PREFIX=/usr \
+        SBINDIR=/usr/bin \
+        LIBDIR=/usr/lib \
+        PKGCONFIGDIR=/usr/lib/pkgconfig \
+        RAISE_SETFCAP=no \
+        INDENT=" " \
+        "$@"
+}
+
+mk
+mk DESTDIR="$1" install
