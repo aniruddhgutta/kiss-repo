@@ -1,0 +1,25 @@
+From 62ef0c3e9678b7fbb948d626d2a7477caafcaab1 Mon Sep 17 00:00:00 2001
+From: aniruddhgutta <aniruddhgutta@disroot.org>
+Date: Sat, 18 Oct 2025 15:29:27 +0530
+Subject: [PATCH 04/16] compiler-rt-libc-for-sanitizers
+
+---
+ compiler-rt/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/compiler-rt/CMakeLists.txt b/compiler-rt/CMakeLists.txt
+index 9f8e8334d..b793dd4fd 100644
+--- a/compiler-rt/CMakeLists.txt
++++ b/compiler-rt/CMakeLists.txt
+@@ -228,7 +228,7 @@ macro(handle_default_cxx_lib var)
+       set(${var}_LIBNAME "libc++")
+       set(${var}_INTREE 1)
+     else()
+-      set(${var}_LIBNAME "libstdc++")
++      set(${var}_LIBNAME "libc++")
+       set(${var}_SYSTEM 1)
+     endif()
+   else()
+-- 
+2.51.0
+

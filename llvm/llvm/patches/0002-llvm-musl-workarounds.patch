@@ -1,0 +1,32 @@
+From 89e06eb1a6084ab9f9eded6eb48ae053b96de4fe Mon Sep 17 00:00:00 2001
+From: aniruddhgutta <aniruddhgutta@disroot.org>
+Date: Sat, 18 Oct 2025 15:27:44 +0530
+Subject: [PATCH 02/16] llvm-musl-workarounds
+
+---
+ llvm/include/llvm/Analysis/TargetLibraryInfo.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/llvm/include/llvm/Analysis/TargetLibraryInfo.h b/llvm/include/llvm/Analysis/TargetLibraryInfo.h
+index c7bd1618e..e70e913d6 100644
+--- a/llvm/include/llvm/Analysis/TargetLibraryInfo.h
++++ b/llvm/include/llvm/Analysis/TargetLibraryInfo.h
+@@ -20,6 +20,15 @@
+ #include <bitset>
+ #include <optional>
+ 
++#undef fopen64
++#undef fseeko64
++#undef fstat64
++#undef fstatvfs64
++#undef ftello64
++#undef lstat64
++#undef stat64
++#undef tmpfile64
++
+ namespace llvm {
+ 
+ template <typename T> class ArrayRef;
+-- 
+2.51.0
+

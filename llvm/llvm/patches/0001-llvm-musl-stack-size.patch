@@ -1,8 +1,17 @@
+From 5d31907dbc47c8bf5aa6cec7761101aa16128ca8 Mon Sep 17 00:00:00 2001
+From: aniruddhgutta <aniruddhgutta@disroot.org>
+Date: Sat, 18 Oct 2025 15:25:56 +0530
+Subject: [PATCH 01/16] llvm-musl-stack-size
+
+---
+ llvm/lib/Support/Threading.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/llvm/lib/Support/Threading.cpp b/llvm/lib/Support/Threading.cpp
-index 923935bbc..26594aac8 100644
+index 693de0e64..d69691d73 100644
 --- a/llvm/lib/Support/Threading.cpp
 +++ b/llvm/lib/Support/Threading.cpp
-@@ -77,7 +77,7 @@ unsigned llvm::ThreadPoolStrategy::compute_thread_count() const {
+@@ -75,7 +75,7 @@ unsigned llvm::ThreadPoolStrategy::compute_thread_count() const {
  // keyword.
  #include "llvm/Support/thread.h"
  
@@ -11,4 +20,6 @@ index 923935bbc..26594aac8 100644
    // Darwin's default stack size for threads except the main one is only 512KB,
    // which is not enough for some/many normal LLVM compilations. This implements
    // the same interface as std::thread but requests the same stack size as the
+-- 
+2.51.0
 

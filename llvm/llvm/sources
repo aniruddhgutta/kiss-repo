@@ -1,2 +1,14 @@
 https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.3/llvm-project-21.1.3.src.tar.xz
-patches/musl-stack-size.patch
+patches/0001-llvm-musl-stack-size.patch
+patches/0002-llvm-musl-workarounds.patch
+patches/0003-llvm-disable-libexecinfo-dependency.patch
+patches/0004-compiler-rt-libc-for-sanitizers.patch
+patches/0005-compiler-rt-build-crt-in-runtimes-build.patch
+patches/0006-compiler-rt-libcxx-abi-libunwind-HACK-force-fno-lto.patch
+patches/0007-compiler-rt-HACK-always-compile-in-gcc_personality_v.patch
+patches/0008-llvm-fix-isOSGlibc-thinking-musl-is-glibc.patch
+patches/0009-libc-libc-abi-libunwind-disable-multiarch-locations.patch
+patches/0010-clang-disable-multiarch-layout-on-musl.patch
+patches/0014-clang-link-libcxxabi-on-linux-when-using-libc.patch
+files/c89
+files/c99
