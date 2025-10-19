@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+patch -p1 < nla_s8.patch
+sed -i 's/^CC=gcc$/CC ?= gcc/' Makefile
+
+make ALL_LIBS=libnl-tiny.a DESTDIR="$1" prefix=/usr install
