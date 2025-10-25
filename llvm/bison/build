@@ -1,3 +1,0 @@
-#!/bin/sh -e
-
-echo "This is a dummy package to satisfy KISS' dependencies."
