@@ -1,0 +1,14 @@
+alsa-lib
+bluez
+dbus
+fdk-aac
+glib
+libsndfile
+libudev-zero
+linux-headers make
+lua make
+meson make
+ncurses
+pkgconf make
+python-packaging make
+sbc
