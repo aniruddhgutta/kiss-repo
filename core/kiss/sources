@@ -3,3 +3,4 @@ https://github.com/kisslinux/website/archive/f0525d4e00c5e07138ac2ceb53936d0b221
 files/no-perl.patch docs/site/wiki/kernel
 patches/retry-download.patch
 patches/lto-support.patch
+patches/max-compression.patch

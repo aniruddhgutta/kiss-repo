@@ -1,0 +1,35 @@
+From 779764a9cdb6ba09340d718fd3e29f4ea2bd4b99 Mon Sep 17 00:00:00 2001
+From: aniruddhgutta <aniruddhgutta@disroot.org>
+Date: Sat, 25 Oct 2025 06:43:06 +0530
+Subject: [PATCH 2/2] max-compression
+
+---
+ kiss | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/kiss b/kiss
+index 9502eed..4a0f3dc 100755
+--- a/kiss
++++ b/kiss
+@@ -194,12 +194,12 @@ run_hook_pkg() {
+ 
+ compress() {
+     case $KISS_COMPRESS in
+-        bz2)  bzip2 -c  ;;
+-        gz)   gzip  -c  ;;
+-        lz)   lzip  -c  ;;
+-        lzma) lzma -cT0 ;;
+-        xz)   xz   -cT0 ;;
+-        zst)  zstd -cT0 ;;
++        bz2)  bzip2 -9  -c   ;;
++        gz)   gzip  -9  -c   ;;
++        lz)   lzip  -9  -c   ;;
++        lzma) lzma  -9  -cT0 ;;
++        xz)   xz    -9e -cT0 ;;
++        zst)  zstd  -19 -cT0 ;;
+     esac
+ }
+ 
+-- 
+2.51.0
+
