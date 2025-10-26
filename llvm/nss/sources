@@ -1,0 +1,4 @@
+https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_117_RTM/src/nss-3.117.tar.gz
+files/certdata.sh nss/lib/ckfw/builtins
+patches/no-perl.patch
+patches/clang-ias.patch
