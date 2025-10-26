@@ -1,3 +1,0 @@
-#!/bin/sh -e
-
-install -Dm744 run "$1/etc/sv/rfkill-unblock/run"
