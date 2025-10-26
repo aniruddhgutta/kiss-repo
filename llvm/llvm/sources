@@ -1,4 +1,4 @@
-https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.3/llvm-project-21.1.3.src.tar.xz
+https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.4/llvm-project-21.1.4.src.tar.xz
 patches/0001-llvm-musl-stack-size.patch
 patches/0002-llvm-musl-workarounds.patch
 patches/0003-llvm-disable-libexecinfo-dependency.patch
