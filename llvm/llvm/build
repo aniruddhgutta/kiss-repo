@@ -1,8 +1,5 @@
 #!/bin/sh -e
 
-# export CFLAGS="$CFLAGS -fPIC"
-# export CXXFLAGS="$CXXFLAGS -fPIC"
-
 sed 's/set(COMPILER_RT_HAS_SANITIZER_COMMON TRUE)/set(COMPILER_RT_HAS_SANITIZER_COMMON FALSE)/' compiler-rt/cmake/config-ix.cmake > _
 mv -f _ compiler-rt/cmake/config-ix.cmake
 
@@ -98,9 +95,6 @@ cmake --install build
 # Headers
 mkdir -p "$1/usr"
 cp -r libcxxabi/include "$1/usr"
-
-# Runtime libs
-# ln -sf linux "$1/usr/lib/clang/21/lib/x86_64-pc-linux-musl"
 
 # POSIX compliance
 ln -sf ld.lld "$1/usr/bin/ld"
