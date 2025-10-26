@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+export CFLAGS="$CFLAGS -std=c17"
+
+./configure \
+    --prefix=/usr
+
+# Remove deprecated 'register' keyword for C++17 compliance.
+sed -i 's/register //g' lib/*.cc src/*.cc
+
+make
+make DESTDIR="$1" install
+
+# Remove HTML documentation.
+rm -rf "$1/usr/share/doc"
