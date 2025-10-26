@@ -1,0 +1,31 @@
+#!/bin/sh -e
+
+for p in *.patch; do
+    patch -p1 < "$p"
+done
+
+# Remove po subdir from main meson.build
+sed -i "/subdir('po')/d" meson.build
+
+# Remove entire i18n section from data/meson.build
+sed -i '/^i18n = import/,/^endif$/d' data/meson.build
+
+export DESTDIR="$1" 
+
+meson setup \
+    -Dprefix=/usr \
+    -Dsysconfdir=/etc \
+    -Dbuildtype=release \
+    -Dsynctex=disabled \
+    -Dtests=disabled \
+    output
+ 
+ninja -C output
+ninja -C output install
+
+mkdir -p "$1/usr/share/man/man1"
+mkdir -p "$1/usr/share/man/man5"
+
+cp zathura.1           "$1/usr/share/man/man1/zathura.1"
+cp zathura-sandbox.1   "$1/usr/share/man/man1/zathura-sandbox.1"
+cp zathurarc.5         "$1/usr/share/man/man5/zathurarc.5"

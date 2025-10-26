@@ -1,0 +1,44 @@
+--- a/data/meson.build
++++ b/data/meson.build
+@@ -14,38 +14,6 @@ if rsvg_convert.found()
+   endforeach
+ endif
+ 
+-i18n = import('i18n')
+-podir = join_paths(meson.project_source_root(), 'po')
+-
+-desktop = i18n.merge_file(
+-  input: 'org.pwmt.zathura.desktop.in',
+-  output: 'org.pwmt.zathura.desktop',
+-  install: true,
+-  install_dir: desktopdir,
+-  po_dir: podir,
+-  type: 'desktop'
+-)
+-
+-appdata = i18n.merge_file(
+-  input: 'org.pwmt.zathura.appdata.xml.in',
+-  output: 'org.pwmt.zathura.appdata.xml',
+-  install: true,
+-  install_dir: metainfodir,
+-  po_dir: podir,
+-)
+-
+-desktop_file_validate = find_program('desktop-file-validate', required: get_option('tests'), native: true)
+-if desktop_file_validate.found()
+-  test('validate-desktop',
+-    desktop_file_validate,
+-    args: [desktop.full_path()]
+-  )
+-endif
+-appstreamcli = find_program('appstreamcli', required: get_option('tests'), native: true)
+-if appstreamcli.found()
+-  test(
+-    'validate-appdata',
+-    appstreamcli,
+-    args: ['validate', '--no-net', appdata.full_path()],
+-  )
+-endif
++# i18n/gettext support removed for minimal build
+ 
+ conf_data = configuration_data()
