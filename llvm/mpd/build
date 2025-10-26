@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup \
+    -Dprefix=/usr \
+    -Dtest=false \
+    -Dsystemd=disabled \
+    -Ddbus=enabled \
+    -Dzeroconf=disabled \
+    -Dalsa=enabled \
+    -Dcpp_args="-include cstdlib" \
+    output
+
+ninja -C output
+ninja -C output install
