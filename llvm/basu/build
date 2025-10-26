@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+# Remove event-loop symbols that don't exist
+sed -i '/sd_bus_attach_event/d; /sd_bus_detach_event/d; /sd_bus_get_event/d' \
+    src/libsystemd/libsystemd.sym
+
+meson setup \
+    -Dprefix=/usr \
+    output
+
+ninja -C output
+ninja -C output install
