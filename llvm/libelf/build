@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+patch -p1 < musl.patch
+
+./configure \
+    --prefix=/usr \
+    --disable-symbol-versioning \
+    --disable-debuginfod \
+    --disable-libdebuginfod \
+    --disable-nls \
+    ac_cv_c99=yes
+
+# Build only libelf (avoids argp/fts deps).
+make -C lib
+make -C libelf
+make -C libelf DESTDIR="$1" install
