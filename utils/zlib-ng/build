@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+export CFLAGS="$CFLAGS -fPIC"
+
+./configure \
+    --prefix=/usr \
+    --zlib-compat \
+    --enable-shared
+
+make
+make DESTDIR="$1" install
