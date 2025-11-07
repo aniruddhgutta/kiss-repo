@@ -1,0 +1,41 @@
+From a0f6e892996f21f391138fe188094c77bcf4c289 Mon Sep 17 00:00:00 2001
+From: phoebos <ben@bvnf.space>
+Date: Wed, 14 Jun 2023 01:57:40 +0100
+Subject: [PATCH] kiss: speedup pkg_find when finding one package
+
+pkg_find is used for 2 purposes:
+ - finding all packages in KISS_PATH that meet some criteria
+ - finding the first package in KISS_PATH that meets criteria
+
+The first is the case for `kiss search` but the second is more common.
+It is used everywhere to find the first package, that is, the package to
+be used for builds, downloads, upgrades etc.
+However, in both cases, every repo in KISS_PATH is scanned for the
+package, which is unnecessary in the second case which only needs the
+first match. Therefore, break after the first match in this case.
+
+On my system, this results in a 2x speedup of `kiss U` (just the logic
+to detect upgrades, exiting before prompting).
+---
+ kiss | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/kiss b/kiss
+index d196d4a..081900b 100755
+--- a/kiss
++++ b/kiss
+@@ -330,7 +330,10 @@ _pkg_find() {
+     for _find_path in $4 "${3:-$sys_db}"; do set +f
+         ok "$_find_path" || continue
+         for _find_pkg in "$_find_path/"$1; do
+-            test "${3:--d}" "$_find_pkg" && set -f -- "$@" "$_find_pkg"
++            test "${3:--d}" "$_find_pkg" && {
++                set -f -- "$@" "$_find_pkg"
++                case $2- in -) break 2 ;; esac
++            }
+         done
+     done
+ 
+-- 
+2.39.2
+

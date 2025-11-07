@@ -1,0 +1,40 @@
+From 5cd40a62c0ac1bd55794b1b2b6be7ce2a8bf16c6 Mon Sep 17 00:00:00 2001
+From: phoebos <ben@bvnf.space>
+Date: Wed, 19 Jul 2023 15:49:23 +0100
+Subject: [PATCH] kiss: don't pkg_order for checksum, download, list
+
+These actions do not need a special order or dependency information.
+The pkg_order function recurses through dependencies which is
+unnecessary and takes extra time. For the packages with the most deps,
+this patch can result in a 5-10x decrease in run time.
+---
+ kiss | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/kiss b/kiss
+index 0fa8e9f..d0da088 100755
+--- a/kiss
++++ b/kiss
+@@ -1971,12 +1971,14 @@ args() {
+                 export KISS_PATH="$sys_db:$KISS_PATH"
+             esac
+ 
+-            # Order the argument list based on dependence.
+-            pkg_order "$@"
++            case $action in b|build|i|install|r|remove)
++                # Order the argument list based on dependence.
++                pkg_order "$@"
+ 
+-            # Intentional, globbing disabled.
+-            # shellcheck disable=2046,2086
+-            set -- $order
++                # Intentional, globbing disabled.
++                # shellcheck disable=2046,2086
++                set -- $order
++            esac
+         ;;
+     esac
+ 
+-- 
+2.39.2
+

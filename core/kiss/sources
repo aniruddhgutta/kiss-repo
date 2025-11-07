@@ -4,3 +4,5 @@ files/no-perl.patch docs/site/wiki/kernel
 patches/retry-download.patch
 patches/lto-support.patch
 patches/max-compression.patch
+patches/order_action.patch
+patches/speedup_find.patch
