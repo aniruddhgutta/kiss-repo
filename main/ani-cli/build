@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+install -Dm755 ani-cli "$1/usr/bin/ani-cli"
