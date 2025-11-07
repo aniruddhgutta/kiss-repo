@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+patch -p1 < build-static-lib.patch
+sed -i 's/gcc/clang/' makefile
+
+make
+
+mkdir -p "$1/usr/lib/"
+install -Dm644 lpeg.a "$1/usr/lib/liblpeg.a"
