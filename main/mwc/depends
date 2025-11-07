@@ -1,0 +1,5 @@
+libinput
+libxkbcommon
+scenefx
+wayland
+wlroots0.18
