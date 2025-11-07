@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+for dir in amd amdgpu amd-ucode rtl_bt rtw88; do
+  mkdir -p "$1/usr/lib/firmware/$dir"
+done
+
+cp -r amd/amd_sev_fam17h_model0xh.sbin    "$1/usr/lib/firmware/amd"
+cp -r amdgpu/renoir_*                     "$1/usr/lib/firmware/amdgpu"
+cp -r amd-ucode/microcode_amd_fam17h.bin  "$1/usr/lib/firmware/amd-ucode"
+cp -r rtl_bt/rtl8822cu_fw.bin             "$1/usr/lib/firmware/rtl_bt"
+cp -r rtw88/rtw8822c_*                    "$1/usr/lib/firmware/rtw88"
