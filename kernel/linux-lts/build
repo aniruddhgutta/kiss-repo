@@ -1,13 +1,21 @@
 #!/bin/sh -e
 
+export LLVM=1 LLVM_IAS=1
+export KCFLAGS="-march=native"
+
 patch -p1 < no-perl.patch
 
 make oldconfig
 make syncconfig
 
+[ "$KERNEL_EDITCONFIG" ] && {
+    make menuconfig >/dev/tty
+    cp .config "$HOME/kernel-config"
+    exit 1
+}
+
 make
 make INSTALL_MOD_PATH="$1" INSTALL_MOD_STRIP=1 modules_install
 
-mkdir -p "$1/boot"
-cp arch/x86/boot/bzImage "$1/boot/vmlinuz-kiss"
+install -Dm755 arch/x86/boot/bzImage "$1/boot/vmlinuz-kiss"
 rm -f "$1/lib/modules"/*/build "$1/lib/modules"/*/source

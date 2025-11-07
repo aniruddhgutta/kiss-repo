@@ -1,3 +1,4 @@
-bison make
-libelf
-linux-lts-firmware
+bison	make
+clang	make
+libelf	make
+linux-firmware
