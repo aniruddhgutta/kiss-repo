@@ -1,0 +1,175 @@
+diff --git a/meson.build b/meson.build
+index 0aa4949..ac5c7c9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -61,24 +61,12 @@ install_symlink(
+   pointing_to: 'tofi',
+ )
+ 
+-install_symlink(
+-  'tofi-drun',
+-  install_dir: completion_location,
+-  pointing_to: 'tofi',
+-)
+-
+ install_symlink(
+   'tofi-run',
+   install_dir: get_option('bindir'),
+   pointing_to: 'tofi',
+ )
+ 
+-install_symlink(
+-  'tofi-drun',
+-  install_dir: get_option('bindir'),
+-  pointing_to: 'tofi',
+-)
+-
+ add_project_arguments(
+   [
+     '-pedantic',
+@@ -100,7 +88,6 @@ common_sources = files(
+   'src/compgen.c',
+   'src/config.c',
+   'src/desktop_vec.c',
+-  'src/drun.c',
+   'src/entry.c',
+   'src/entry_backend/pango.c',
+   'src/entry_backend/harfbuzz.c',
+@@ -132,8 +119,6 @@ compgen_sources = files(
+ cc = meson.get_compiler('c')
+ librt = cc.find_library('rt', required: false)
+ libm = cc.find_library('m', required: false)
+-# On systems where libc doesn't provide fts (i.e. musl) we require libfts
+-libfts = cc.find_library('fts', required: not cc.has_function('fts_read'))
+ freetype = dependency('freetype2')
+ harfbuzz = dependency('harfbuzz')
+ cairo = dependency('cairo')
+@@ -204,7 +189,7 @@ subdir('test')
+ executable(
+   'tofi',
+   files('src/main.c'), common_sources, wl_proto_src, wl_proto_headers,
+-  dependencies: [librt, libm, libfts, freetype, harfbuzz, cairo, pangocairo, wayland_client, xkbcommon, glib, gio_unix],
++  dependencies: [librt, libm, freetype, harfbuzz, cairo, pangocairo, wayland_client, xkbcommon, glib, gio_unix],
+   install: true
+ )
+ 
+@@ -239,13 +224,6 @@ if scdoc.found()
+     pointing_to: 'tofi.1'
+   )
+ 
+-  install_symlink(
+-    'tofi-drun.1',
+-    install_dir: '@0@/man1'.format(mandir),
+-    pointing_to: 'tofi.1'
+-  )
+-
+-
+   output = 'tofi.5'
+   custom_target(
+     output,
+diff --git a/src/main.c b/src/main.c
+index e91838f..6d3e179 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -15,7 +15,6 @@
+ #include <xkbcommon/xkbcommon.h>
+ #include "tofi.h"
+ #include "compgen.h"
+-#include "drun.h"
+ #include "config.h"
+ #include "entry.h"
+ #include "input.h"
+@@ -918,8 +917,6 @@ const struct option long_options[] = {
+ 	{"hide-input", required_argument, NULL, 0},
+ 	{"hidden-character", required_argument, NULL, 0},
+ 	{"physical-keybindings", required_argument, NULL, 0},
+-	{"drun-launch", required_argument, NULL, 0},
+-	{"drun-print-exec", required_argument, NULL, 0},
+ 	{"terminal", required_argument, NULL, 0},
+ 	{"hint-font", required_argument, NULL, 0},
+ 	{"multi-instance", required_argument, NULL, 0},
+@@ -1007,8 +1004,7 @@ static bool do_submit(struct tofi *tofi)
+ 	char *res = entry->results.buf[selection].string;
+ 
+ 	if (tofi->window.entry.results.count == 0) {
+-		/* Always require a match in drun mode. */
+-		if (tofi->require_match || entry->mode == TOFI_MODE_DRUN) {
++		if (tofi->require_match) {
+ 			return false;
+ 		} else {
+ 			printf("%s\n", entry->input_utf8);
+@@ -1016,30 +1012,6 @@ static bool do_submit(struct tofi *tofi)
+ 		}
+ 	}
+ 
+-	if (entry->mode == TOFI_MODE_DRUN) {
+-		/*
+-		 * At this point, the list of apps is history sorted rather
+-		 * than alphabetically sorted, so we can't use
+-		 * desktop_vec_find_sorted().
+-		 */
+-		struct desktop_entry *app = NULL;
+-		for (size_t i = 0; i < entry->apps.count; i++) {
+-			if (!strcmp(res, entry->apps.buf[i].name)) {
+-				app = &entry->apps.buf[i];
+-				break;
+-			}
+-		}
+-		if (app == NULL) {
+-			log_error("Couldn't find application file! This shouldn't happen.\n");
+-			return false;
+-		}
+-		char *path = app->path;
+-		if (tofi->drun_launch) {
+-			drun_launch(path);
+-		} else {
+-			drun_print(path, tofi->default_terminal);
+-		}
+-	} else {
+ 		if (entry->mode == TOFI_MODE_PLAIN && tofi->print_index) {
+ 			for (size_t i = 0; i < entry->commands.count; i++) {
+ 				if (res == entry->commands.buf[i].string) {
+@@ -1050,7 +1022,6 @@ static bool do_submit(struct tofi *tofi)
+ 		} else {
+ 			printf("%s\n", res);
+ 		}
+-	}
+ 	if (tofi->use_history) {
+ 		history_add(
+ 				&entry->history,
+@@ -1450,7 +1421,6 @@ int main(int argc, char *argv[])
+ 
+ 	/*
+ 	 * If we were invoked as tofi-run, generate the command list.
+-	 * If we were invoked as tofi-drun, generate the desktop app list.
+ 	 * Otherwise, just read standard input.
+ 	 */
+ 	if (strstr(argv[0], "-run")) {
+@@ -1472,27 +1442,6 @@ int main(int argc, char *argv[])
+ 		}
+ 		log_unindent();
+ 		log_debug("Command list generated.\n");
+-	} else if (strstr(argv[0], "-drun")) {
+-		log_debug("Generating desktop app list.\n");
+-		log_indent();
+-		tofi.window.entry.mode = TOFI_MODE_DRUN;
+-		struct desktop_vec apps = drun_generate_cached();
+-		if (tofi.use_history) {
+-			if (tofi.history_file[0] == 0) {
+-				tofi.window.entry.history = history_load_default_file(true);
+-			} else {
+-				tofi.window.entry.history = history_load(tofi.history_file);
+-			}
+-			drun_history_sort(&apps, &tofi.window.entry.history);
+-		}
+-		struct string_ref_vec commands = string_ref_vec_create();
+-		for (size_t i = 0; i < apps.count; i++) {
+-			string_ref_vec_add(&commands, apps.buf[i].name);
+-		}
+-		tofi.window.entry.commands = commands;
+-		tofi.window.entry.apps = apps;
+-		log_unindent();
+-		log_debug("App list generated.\n");
+ 	} else {
+ 		log_debug("Reading stdin.\n");
+ 		char *buf = read_stdin(!tofi.ascii_input);
