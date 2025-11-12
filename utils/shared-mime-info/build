@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup build \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dupdate-mimedb=false \
+    -Dbuild-tools=true \
+    -Dbuild-translations=false \
+    -Dbuild-tests=false
+
+ninja -C build
+ninja -C build install
