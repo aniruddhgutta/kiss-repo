@@ -1,0 +1,8 @@
+appstream
+glib
+graphene
+gtk4
+meson
+pango
+xdg-desktop-portal
+xdg-desktop-portal-gtk

@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+sed -i "/wallpaper/d" src/meson.build
+sed -i "/gnome-bg-4/d" src/meson.build
+sed -i '/wallpaper_init/d' src/xdg-desktop-portal-gnome.c
+
+meson setup build \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --sysconfdir=/etc \
+    --buildtype=release \
+    -Dsystemd=disabled \
+    -Ddbus_service_dir=/usr/share/dbus-1/services
+
+ninja -C build
+ninja -C build install
