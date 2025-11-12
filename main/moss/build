@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+cargo build --release
+
+install -Dm755 target/release/moss "$1/usr/bin/moss"
+cp moss.toml "$1/etc/moss.toml"
