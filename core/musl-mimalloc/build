@@ -1,0 +1,47 @@
+#!/bin/sh -e
+
+curl -LO https://github.com/microsoft/mimalloc/archive/refs/tags/v2.1.7.tar.gz
+tar xf v2.1.7.tar.gz
+mv mimalloc-2.1.7 mimalloc
+
+for p in *.patch; do
+    patch -p1 < "$p"
+done
+
+# Uncomment if using valgrind or similar.
+# :>nostrip
+
+# Copy mimalloc unified source
+cp mimalloc.c mimalloc/src/
+
+# Remove slow asm memcpy
+rm -f src/string/x86_64/memcpy.s
+
+./configure \
+    --prefix=/usr \
+    --syslibdir=/usr/lib \
+    --with-malloc=external \
+# Uncomment if using valgrind or similar.
+#   --enable-debug
+
+make EXTRA_OBJ='$(srcdir)/src/malloc/external/mimalloc.o'
+make DESTDIR="$1" install
+
+mkdir -p "$1/usr/bin"
+
+cc iconv.c -o "$1/usr/bin/iconv"
+cc -c __stack_chk_fail_local.c
+"${AR:-ar}" r "$1/usr/lib/libssp_nonshared.a" __stack_chk_fail_local.o
+
+ln -s  /usr/lib/ld-musl-x86_64.so.1 "$1/usr/bin/ldd"
+
+# Fix incorrect symlink to libc.so.
+ln -sf libc.so "$1/usr/lib/ld-musl-x86_64.so.1"
+
+# Install BSD compatibility headers.
+cp -f cdefs.h queue.h tree.h \
+    "$1/usr/include/sys"
+
+# Install getconf.
+cc getconf.c -o "$1/usr/bin/getconf"
+cc getent.c  -o "$1/usr/bin/getent"

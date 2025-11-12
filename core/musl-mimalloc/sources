@@ -1,0 +1,17 @@
+https://musl.libc.org/releases/musl-1.2.5.tar.gz
+files/cdefs.h
+files/queue.h
+files/tree.h
+files/getconf.c
+files/getent.c
+files/iconv.c
+files/__stack_chk_fail_local.c
+files/mimalloc-verify-syms.sh
+files/mimalloc.c
+patches/iconv_fix_erroneous_input_validation.patch
+patches/iconv_harden_utf-8_output.patch
+patches/0001-plumb-in-support-for-externally-provided-allocator-l.patch
+patches/0001-implement-necessary-bits-for-musl-integration.patch
+patches/mimalloc-errno.patch
+patches/mimalloc-tweak-options.patch
+patches/memcpy.patch
