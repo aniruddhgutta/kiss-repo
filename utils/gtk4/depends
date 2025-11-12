@@ -1,0 +1,10 @@
+cairo
+freetype-harfbuzz
+harfbuzz
+gdk-pixbuf
+glib
+graphene
+libepoxy
+pango
+wayland
+wayland-protocols
