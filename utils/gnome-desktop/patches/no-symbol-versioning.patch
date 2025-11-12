@@ -1,0 +1,58 @@
+From 083ebbe6a9ec4f9e2de0390ac6c128023d816b0b Mon Sep 17 00:00:00 2001
+From: aniruddhgutta <aniruddhgutta@disroot.org>
+Date: Fri, 31 Oct 2025 23:47:40 +0530
+Subject: [PATCH] no-symbol-versioning
+
+---
+ libgnome-desktop/meson.build | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
+
+diff --git a/libgnome-desktop/meson.build b/libgnome-desktop/meson.build
+index 8518a1c..1cae40f 100644
+--- a/libgnome-desktop/meson.build
++++ b/libgnome-desktop/meson.build
+@@ -56,10 +56,6 @@ dbus_idle_built_sources = gnome.gdbus_codegen('meta-dbus-idle-monitor',
+ )
+ 
+ base_ldflags = []
+-base_symbol_map = '-Wl,--version-script=@0@'.format(meson.current_source_dir() / 'base-symbol.map')
+-if cc.has_link_argument(base_symbol_map)
+-  base_ldflags += base_symbol_map
+-endif
+ 
+ ### gnome-desktop-base
+ libgnome_desktop_base_sources = [
+@@ -156,9 +152,7 @@ if get_option('build_gtk4')
+   )
+ 
+   libgnome_desktop_base_dep = declare_dependency(
+-    sources: [
+-      libgnome_desktop_base_gir,
+-    ],
++    sources: get_option('introspection') ? [libgnome_desktop_base_gir] : [],
+     dependencies: base_deps,
+     link_with: libgnome_desktop_base,
+     include_directories: [
+@@ -167,8 +161,6 @@ if get_option('build_gtk4')
+     ],
+   )
+ 
+-  subdir('gnome-bg')
+-  subdir('gnome-rr')
+ endif
+ 
+ ### Legacy ###
+@@ -235,10 +227,6 @@ if get_option('legacy_library')
+   ]
+ 
+   compat_ldflags = []
+-  compat_symbol_map = '-Wl,--version-script=@0@'.format(meson.current_source_dir() / 'symbol.map')
+-  if cc.has_link_argument(compat_symbol_map)
+-    compat_ldflags += compat_symbol_map
+-  endif
+ 
+   libgnome_desktop = library('gnome-desktop-3',
+     libgnome_desktop_sources,
+-- 
+2.51.0
+

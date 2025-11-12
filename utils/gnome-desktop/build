@@ -1,0 +1,23 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+patch -p1 < no-symbol-versioning.patch
+
+meson setup build \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --sysconfdir=/etc \
+    --buildtype=release \
+    -Ddesktop_docs=false \
+    -Ddebug_tools=false \
+    -Dintrospection=false \
+    -Dudev=disabled \
+    -Dsystemd=disabled \
+    -Dgtk_doc=false \
+    -Dinstalled_tests=false \
+    -Dbuild_gtk4=true \
+    -Dlegacy_library=false
+
+ninja -C build
+ninja -C build install

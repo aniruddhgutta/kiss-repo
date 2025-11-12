@@ -1,0 +1,4 @@
+glib
+gsettings-desktop-schemas
+gtk4
+libseccomp
