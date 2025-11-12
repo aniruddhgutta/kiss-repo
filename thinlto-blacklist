@@ -1,0 +1,11 @@
+binutils
+ffmpeg
+firefox
+fuse
+gcc
+llvm
+llvm-bootstrap
+ly
+musl
+openssl
+rust

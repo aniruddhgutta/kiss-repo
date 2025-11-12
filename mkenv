@@ -2,9 +2,19 @@
 # NOTE: Review aggressive flags below - may break some packages
 
 # Compiler flags
-COMMON_FLAGS="-O2 -march=native -pipe"
+: "${USE_OX:=2}"
+case $USE_OX in
+    z) COMMON_FLAGS=-Oz ;;
+    s) COMMON_FLAGS=-Os ;;
+    1) COMMON_FLAGS=-O1 ;;
+    2) COMMON_FLAGS=-O2 ;;
+    3) COMMON_FLAGS=-O3 ;;
+esac
+
+COMMON_FLAGS="$COMMON_FLAGS -march=native -pipe"
 # basics:
-#  -O2 - safe optimizations
+#  -O2 - performance optimizations (safe)
+#  -Os - space saving optimizations (safe)
 #  -march=native - targets the host architecture and adds extra CPU-specific flags not enabled by explicit architectures
 #  -pipe - speeds up builds, uses pipes instead of temporary files
 
@@ -14,9 +24,12 @@ COMMON_FLAGS="$COMMON_FLAGS -ffunction-sections -fdata-sections -fno-plt -fstack
 #  -fno-plt - faster function calls
 #  -fstack-protector-strong - stack canaries
 
-# COMMON_FLAGS="$COMMON_FLAGS -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-semantic-interposition -fomit-frame-pointer -fmerge-all-constants -fstack-clash-protection"
+COMMON_FLAGS="$COMMON_FLAGS -fno-unwind-tables -fno-asynchronous-unwind-tables"
+#  -fno-unwind-tables - removes synchronous unwind tables used for C++ exceptions and some stack tracing
+#  -fno-asynchronous-unwind-tables - removes async unwind tables used by debuggers and signal-based stack unwinding
+
+# COMMON_FLAGS="$COMMON_FLAGS -fno-semantic-interposition -fomit-frame-pointer -fmerge-all-constants -fstack-clash-protection"
 # aggressive:
-#  -fno-unwind-tables/-fno-asynchronous-unwind-tables - removes unwind info (saves space, kills exceptions/backtraces)
 #  -fno-semantic-interposition - disables symbol interposition (faster calls, can break libraries expecting it)
 #  -fomit-frame-pointer - free reg, minor perf
 #  -fmerge-all-constants - dedup constants (can break code relying on addresses)

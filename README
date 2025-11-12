@@ -14,13 +14,15 @@ Repository structure:
     - core/     - Base system and toolchain
     - hooks/    - KISS_HOOKS for the package manager
     - kernel/   - Linux kernels and firmware
-    - llvm/     - Bootstrap Clang/LLVM/musl toolchain
+    - llvm/     - Bootstrap LLVM, package fixes for LLVM-only setups
     - main/     - User-facing programs
     - themes/   - Fonts, cursors, icons, themes
     - utils/    - Daemons, services, helper tools, non-essential libs
     - wip/      - Experimental, dropped, WIP packages
     - mkenv     - User-sourced build optimizations
-    - lto-blacklist - List of packages with LTO disabled
+    - os-exceptions - List of packages with -O2 applied (instead of -Os)
+    - lto-blacklist - List of packages with full LTO disabled
+    - thinlto-blacklist - List of packages with thin LTO disabled (llvm)
 
 Needed Repositories:
 
