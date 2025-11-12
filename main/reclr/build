@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+install -Dm755 reclr "$1/usr/bin/reclr"
+
+mkdir -p "$1/etc/reclr"
+cp -r palettes "$1/etc/reclr/"
+cp -r templates "$1/etc/reclr/"
