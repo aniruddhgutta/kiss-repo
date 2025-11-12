@@ -1,5 +1,6 @@
-meson
-gtk+3
+gdk-pixbuf
+glib
 gnome-desktop
 gsettings-desktop-schemas
+gtk+3
 xdg-desktop-portal

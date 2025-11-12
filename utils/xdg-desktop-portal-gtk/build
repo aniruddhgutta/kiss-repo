@@ -4,7 +4,7 @@ export DESTDIR="$1"
 
 meson setup \
     -Dprefix=/usr \
-    -Dsystemd-user-unit-dir=/dev/null \
+    -Dsystemd-user-unit-dir=/usr/lib/systemd/user \
     -Dwallpaper=disabled \
     -Dsettings=disabled \
     -Dappchooser=enabled \
