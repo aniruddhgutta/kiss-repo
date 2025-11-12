@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+# Build without X11 support (Wayland only)
+zig build -Denable_x11_support=false
+
+# Install
+zig build installexe -Dinit_system=runit --prefix "$1/usr"
+
+# Ensure service directory exists
+mkdir -p "$1/etc/sv/ly"

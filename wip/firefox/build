@@ -1,0 +1,88 @@
+#!/bin/sh -e
+
+for p in *.patch; do
+    patch -p1 < "$p"
+done
+
+sed '/UNZIP/d' toolkit/moz.configure > _
+mv -f _ toolkit/moz.configure
+
+# Set CXXSTDLIB for libc++
+export CXXSTDLIB=c++
+export CFLAGS="$CFLAGS -w"
+export CXXFLAGS="$CXXFLAGS -w"
+
+# Fix Rust target triple to match C/C++
+export RUST_TARGET="x86_64-pc-linux-musl"
+
+# Instruct the compiler to trim absolute paths in resulting binaries and instead
+# change them to relative paths ($PWD/... ./...).
+export RUSTFLAGS="$RUSTFLAGS --remap-path-prefix=$PWD=."
+
+export LDFLAGS="$LDFLAGS -Wl,-rpath=/usr/lib/firefox,--enable-new-dtags"
+export RUSTFLAGS="$RUSTFLAGS -Cdebuginfo=0"
+export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system
+export MOZ_DEBUG_FLAGS=-g0
+export MOZBUILD_STATE_PATH="$PWD/state"
+export MOZ_NOSPAM=1
+
+cat > .mozconfig << EOF
+ac_add_options --prefix=/usr
+ac_add_options --libdir=/usr/lib
+ac_add_options --enable-default-toolkit=cairo-gtk3-wayland-only
+ac_add_options --enable-release
+ac_add_options --enable-rust-simd
+ac_add_options --enable-audio-backends=alsa
+ac_add_options --enable-strip
+ac_add_options --enable-install-strip
+ac_add_options --enable-hardening
+ac_add_options --enable-official-branding
+ac_add_options --enable-application=browser
+ac_add_options --enable-optimize
+ac_add_options --enable-lto=cross
+ac_add_options --enable-linker=lld
+ac_add_options --with-system-ffi
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-libvpx
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-pixman
+ac_add_options --with-system-png
+ac_add_options --with-system-webp
+ac_add_options --with-system-zlib
+ac_add_options --without-wasm-sandboxed-libraries
+ac_add_options --disable-eme
+ac_add_options --disable-dbus
+ac_add_options --disable-tests
+ac_add_options --disable-vtune
+ac_add_options --disable-updater
+ac_add_options --disable-jemalloc
+ac_add_options --disable-elf-hack
+ac_add_options --disable-callgrind
+ac_add_options --disable-profiling
+ac_add_options --disable-necko-wifi
+ac_add_options --disable-crashreporter
+ac_add_options --disable-accessibility
+ac_add_options --disable-debug
+ac_add_options --disable-debug-symbols
+ac_add_options --disable-parental-controls
+ac_add_options --disable-system-extension-dirs
+
+mk_add_options MOZ_MAKE_FLAGS="-j12"
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj
+mk_add_options AUTOCLOBBER=1
+
+export CFLAGS="$CFLAGS -O2 -march=native -mtune=native -pipe -fno-semantic-interposition -fomit-frame-pointer -fdata-sections -ffunction-sections -fno-plt -ftree-vectorize -fno-common -fstack-protector-strong"
+export CXXFLAGS="$CFLAGS"
+export RUSTFLAGS="$RUSTFLAGS -C opt-level=2 -C target-cpu=native -C codegen-units=1 -C debuginfo=0 -C strip=symbols -C embed-bitcode=yes -C lto=thin"
+export LDFLAGS="$LDFLAGS -Wl,-O2 -Wl,--as-needed -Wl,--gc-sections -Wl,--sort-common -Wl,--hash-style=gnu -Wl,-z,now -Wl,-z,relro -Wl,-z,stack-size=2097152  -fuse-ld=lld -lc++ "
+EOF
+
+./mach build
+DESTDIR="$1" ./mach install
+
+# Remove a lot of uneeded "stuff".
+rm -rf \
+    "$1/usr/include" \
+    "$1/usr/lib/firefox-devel" \
+    "$1/usr/share/idl"

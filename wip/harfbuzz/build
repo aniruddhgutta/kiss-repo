@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup build \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dglib=enabled \
+    -Dgobject=enabled \
+    -Dcairo=enabled \
+    -Dfreetype=enabled \
+    -Dgraphite2=disabled \
+    -Dicu=disabled \
+    -Ddocs=disabled \
+    -Dtests=disabled \
+    -Dutilities=disabled \
+    -Dbenchmark=disabled \
+    -Dintrospection=disabled
+
+ninja -C build
+ninja -C build install

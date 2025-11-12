@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+export DESTDIR="$1"
+
+meson setup \
+    -Dprefix=/usr \
+    -Dwindows=wayland \
+    -Dunicode=icu \
+    -Dman=disabled \
+    -Dtest=disabled \
+    -Dfreeimage=disabled \
+    -Dlibtiff=enabled \
+    -Dlibpng=enabled \
+    -Dlibjpeg=enabled \
+    -Dlibrsvg=disabled \
+    -Dlibnsgif=disabled \
+    -Dlibheif=disabled \
+    -Dlibjxl=disabled \
+    output
+
+ninja -C output
+ninja -C output install
