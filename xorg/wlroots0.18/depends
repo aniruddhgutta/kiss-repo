@@ -5,6 +5,7 @@ libdrm
 libinput
 libseat
 libudev-zero
+libxcb
 libxkbcommon
 linux-headers make
 mesa
@@ -12,3 +13,5 @@ meson make
 pixman
 wayland
 wayland-protocols make
+xcb-util-wm
+xwayland
