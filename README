@@ -19,6 +19,7 @@ Repository structure:
     - themes/   - Fonts, cursors, icons, themes
     - utils/    - Daemons, services, helper tools, non-essential libs
     - wip/      - Experimental, dropped, WIP packages
+    - xorg/     - Overrides for Xorg-related packages
     - mkenv     - User-sourced build optimizations
     - os-exceptions - List of packages with -O2 applied (instead of -Os)
     - lto-blacklist - List of packages with full LTO disabled
@@ -29,6 +30,7 @@ Needed Repositories:
     - https://codeberg.org/kiss-community/repo
     - https://codeberg.org/kiss-community/community
     - https://codeberg.org/kiss-community/kiss-dbus
+    - https://github.com/echawk/kiss-xorg (optional, only for xorg/)
 
 Package documentation:
 
