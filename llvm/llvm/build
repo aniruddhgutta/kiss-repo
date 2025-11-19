@@ -22,6 +22,8 @@ cmake -B build \
     -DLLVM_ENABLE_LLD=ON \
     -DLLVM_OPTIMIZED_TABLEGEN=ON \
     -DLLVM_ENABLE_ASSERTIONS=OFF \
+    -DLLVM_ENABLE_UNWIND_TABLES=OFF \
+    -DLLVM_ENABLE_BACKTRACES=OFF \
     \
     -DLLVM_ENABLE_PROJECTS='clang;lld' \
     -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind' \
